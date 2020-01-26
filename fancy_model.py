@@ -24,7 +24,7 @@ X_trn, X_tst, y_trn, y_tst = train_test_split(X, y, test_size=0.2, random_state=
 
 # %%
 # train a model
-mdl = RandomForestClassifier(n_estimators=args.n_estimators,  max_depth=args.max_depth, random_state=4)
+mdl = RandomForestClassifier(n_estimators=args.n_estimators,  max_depth=args.max_depth, random_state=42)
 mdl.fit(X_trn, y_trn)
 
 # make predictions on hold-out dataset
