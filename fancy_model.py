@@ -21,9 +21,9 @@ parser.add_argument('--token_file', type=str, default='~/.ssh/neptune.creds',
 args = parser.parse_args()
 
 
-with open(agrs.token_file) as f:
+with open(args.token_file) as f:
     neptune_token, _ = f.read().split('\n')
-neptune.init('mlisovyi/ibm_unconference2020_demo', api_token=neptune_token)
+neptune.init('mlisovyi/ibm-unconference2020-demo', api_token=neptune_token)
 
 # get the data
 data = load_breast_cancer()
@@ -31,20 +31,20 @@ X, y = data['data'], data['target']
 X_trn, X_tst, y_trn, y_tst = train_test_split(X, y, test_size=0.2, random_state=314)
 
 # %%
-# train a model
-mdl = RandomForestClassifier(n_estimators=args.n_estimators,  max_depth=args.max_depth, random_state=42)
-mdl.fit(X_trn, y_trn)
+with neptune.create_experiment(name='Very Random Forest',
+                               params=dict(n_estimators=args.n_estimators,  max_depth=args.max_depth)):
+    # train a model
+    mdl = RandomForestClassifier(n_estimators=args.n_estimators,  max_depth=args.max_depth, random_state=42)
+    mdl.fit(X_trn, y_trn)
 
-# make predictions on hold-out dataset
-y_pred = mdl.predict(X_tst)
+    # make predictions on hold-out dataset
+    y_pred = mdl.predict(X_tst)
 
-# report model performance
-accuracy = accuracy_score(y_tst, y_pred)
-f1 = f1_score(y_tst, y_pred)
-print(f'Model performance: accuracy = {accuracy:.3f}, F1 = {f1:.3f}')
-
-# store the model
-timestamp = datetime.datetime.utcnow().strftime('%Y%m%dT%H%M%S')
-joblib.dump(mdl, f'data/mdl_{timestamp}.joblib')
+    # report model performance
+    accuracy = accuracy_score(y_tst, y_pred)
+    f1 = f1_score(y_tst, y_pred)
+    neptune.log_metric('Acc', accuracy)
+    neptune.log_metric('F1', f1)
+    print(f'Model performance: accuracy = {accuracy:.3f}, F1 = {f1:.3f}')
 
 # %%
