@@ -18,12 +18,14 @@ parser.add_argument('--max_depth', type=int, default=2,
                     help='Number of lavels in a tree.')
 parser.add_argument('--token_file', type=str, default='~/.ssh/neptune.creds',
                     help='The file containing neptune access token.')
+parser.add_argument('--user_project', type=str, default='mlisovyi/ibm-unconference2020-demo',
+                    help='Combination of user neptune user name and projct. The project has to be created beforehand.')
 args = parser.parse_args()
 
 
 with open(args.token_file) as f:
     neptune_token, _ = f.read().split('\n')
-neptune.init('mlisovyi/ibm-unconference2020-demo', api_token=neptune_token)
+neptune.init(args.user_project, api_token=neptune_token)
 
 # get the data
 data = load_breast_cancer()
