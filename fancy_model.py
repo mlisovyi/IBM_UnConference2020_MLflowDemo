@@ -1,4 +1,5 @@
 # %%
+
 import joblib
 import datetime
 
@@ -8,7 +9,6 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import numpy as np
-
 import mlflow
 import mlflow.sklearn
 
@@ -28,7 +28,7 @@ with mlflow.start_run():
     mlflow.log_param('max_depth', max_depth)
 
     # train a model
-    mdl = RandomForestClassifier(n_estimators=n_estimators,  max_depth=max_depth)
+    mdl = RandomForestClassifier(n_estimators=n_estimators,  max_depth=max_depth, random_state=42)
     mdl.fit(X_trn, y_trn)
 
     # make predictions on hold-out dataset
