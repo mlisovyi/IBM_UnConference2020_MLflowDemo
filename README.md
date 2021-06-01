@@ -25,5 +25,5 @@ conda activate mlflow_demo
 
 There are two main branches used in the demo:
 
-* __exp_vanilla__ demonstrates how to train a basic ML model;
-* __exp_mlflow__ demonstrates how to add model tracking to the model training.
+- __exp_vanilla__ demonstrates how to train a basic ML model;
+- __exp_mlflow__ demonstrates how to add model tracking to the model training.
