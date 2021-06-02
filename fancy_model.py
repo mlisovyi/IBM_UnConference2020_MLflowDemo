@@ -1,14 +1,16 @@
 # %%
 import argparse
-import joblib
 import datetime
+from pathlib import Path
 
+import joblib
+import numpy as np
+import pandas as pd
 from sklearn.datasets import load_breast_cancer
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import (accuracy_score, f1_score, precision_score,
+                             recall_score)
 from sklearn.model_selection import train_test_split
-import pandas as pd
-import numpy as np
 
 parser = argparse.ArgumentParser(description='Train a ML model.')
 parser.add_argument('--n_estimators', type=int, default=10,
@@ -37,6 +39,8 @@ print(f'Model performance: accuracy = {accuracy:.3f}, F1 = {f1:.3f}')
 
 # store the model
 timestamp = datetime.datetime.utcnow().strftime('%Y%m%dT%H%M%S')
-joblib.dump(mdl, f'data/mdl_{timestamp}.joblib')
+file_out = Path(f'data/mdl_{timestamp}.joblib')
+file_out.parent.mkdir(parents=True, exist_ok=True)
+joblib.dump(mdl, file_out)
 
 # %%
